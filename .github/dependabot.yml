@@ -9,6 +9,7 @@ updates:
   # Maintain dependencies for Terraform
   - package-ecosystem: "terraform"
     directories:
-      - "/modules/**/*"
+      - "/"
+      - "/examples/**/*"
     schedule:
       interval: "monthly"

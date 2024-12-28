@@ -6,12 +6,38 @@ The module follows the same structure as the [Terraform AWS community modules](h
 ## Usage
 
 ```hcl
+module "knowledge_base" {
+  source = "github.com/wolfm89/terraform-aws-bedrock-knowledge-base"
 
+  name            = "knowledge-base"
+  embedding_model = "amazon.titan-embed-text-v2:0"
+
+  storage_type = "OPENSEARCH_SERVERLESS"
+  opensearch_serverless_config = {
+    collection_arn    = "arn:aws:aoss:eu-central-1:123456789012:collection/w3vefn2ijps5xj0j9x6f"
+    vector_index_name = "knowledge-base-index"
+    field_mapping = {
+      vector_field   = "vector"
+      metadata_field = "metadata"
+      text_field     = "text"
+    }
+  }
+
+  data_source_configurations = {
+    "source1" = {
+      bucket                   = "my-bucket"
+      bucket_paths             = ["source1"]
+      chunking_strategy        = "FIXED_SIZE"
+      fixed_max_tokens         = 300
+      fixed_overlap_percentage = 10
+    }
+  }
+}
 ```
 
 ## Examples
 
-- [](./examples//README.md):
+- [Knowledge Base with OpenSearch](./examples/oss-complete/README.md)
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
@@ -60,7 +86,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_data_source_configurations"></a> [data\_source\_configurations](#input\_data\_source\_configurations) | Configuration for the data source | <pre>map(object({<br/>    bucket                                   = string<br/>    bucket_paths                             = list(string)<br/>    chunking_strategy                        = optional(string, "NONE")<br/>    fixed_max_tokens                         = optional(number, null)<br/>    fixed_overlap_percentage                 = optional(number, null)<br/>    hierarchical_level_parent_max_tokens     = optional(number, null)<br/>    hierarchical_level_child_max_tokens      = optional(number, null)<br/>    hierarchical_overlap_tokens              = optional(number, null)<br/>    semantic_breakpoint_percentile_threshold = optional(number, null)<br/>    semantic_buffer_size                     = optional(number, null)<br/>    semantic_max_tokens                      = optional(number, null)<br/>    parsing_model_arn                        = optional(string, null)<br/>    parsing_prompt_string                    = optional(string, null)<br/>  }))</pre> | n/a | yes |
+| <a name="input_data_source_configurations"></a> [data\_source\_configurations](#input\_data\_source\_configurations) | Configurations for the data sources | <pre>map(object({<br/>    bucket                                   = string<br/>    bucket_paths                             = list(string)<br/>    chunking_strategy                        = optional(string, "NONE")<br/>    fixed_max_tokens                         = optional(number, null)<br/>    fixed_overlap_percentage                 = optional(number, null)<br/>    hierarchical_level_parent_max_tokens     = optional(number, null)<br/>    hierarchical_level_child_max_tokens      = optional(number, null)<br/>    hierarchical_overlap_tokens              = optional(number, null)<br/>    semantic_breakpoint_percentile_threshold = optional(number, null)<br/>    semantic_buffer_size                     = optional(number, null)<br/>    semantic_max_tokens                      = optional(number, null)<br/>    parsing_model_arn                        = optional(string, null)<br/>    parsing_prompt_string                    = optional(string, null)<br/>  }))</pre> | n/a | yes |
 | <a name="input_embedding_model"></a> [embedding\_model](#input\_embedding\_model) | Name of the embedding model | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | Name of the knowledge base | `string` | n/a | yes |
 | <a name="input_opensearch_serverless_config"></a> [opensearch\_serverless\_config](#input\_opensearch\_serverless\_config) | Configuration for OpenSearch Serverless | <pre>object({<br/>    collection_arn    = string<br/>    vector_index_name = string<br/>    field_mapping = object({<br/>      vector_field   = string<br/>      text_field     = string<br/>      metadata_field = string<br/>    })<br/>  })</pre> | `null` | no |
@@ -73,6 +99,6 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_data_source_ids"></a> [data\_source\_ids](#output\_data\_source\_ids) | Map of data source name to ID. |
-| <a name="output_knowledge_base_id"></a> [knowledge\_base\_id](#output\_knowledge\_base\_id) | The ID of the knowledge base. |
+| <a name="output_data_source_ids"></a> [data\_source\_ids](#output\_data\_source\_ids) | Map of data source name to ID |
+| <a name="output_knowledge_base_id"></a> [knowledge\_base\_id](#output\_knowledge\_base\_id) | ID of the knowledge base |
 <!-- END_TF_DOCS -->

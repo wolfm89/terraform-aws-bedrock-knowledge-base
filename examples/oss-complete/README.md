@@ -19,7 +19,7 @@ This will be used to configure the S3 backend for Terraform.
 Create a file named `terraform.tfvars` with the following content (replace the values with your own):
 
 ```hcl
-creator                          = "my.email@email.com"
+creator = "my.email@email.com"
 ```
 
 To run this example you need to execute:
@@ -77,7 +77,7 @@ Note that this example may create resources which can cost money. Run `terraform
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_creator"></a> [creator](#input\_creator) | The creator of the resources. Used for resource tagging. | `string` | n/a | yes |
+| <a name="input_creator"></a> [creator](#input\_creator) | Creator of the resources. Used for resource tagging | `string` | n/a | yes |
 
 ## Outputs
 

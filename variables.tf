@@ -103,7 +103,7 @@ variable "rds_config" {
   }
 }
 variable "data_source_configurations" {
-  description = "Configuration for the data source"
+  description = "Configurations for the data sources"
   type = map(object({
     bucket                                   = string
     bucket_paths                             = list(string)
